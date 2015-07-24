@@ -20,7 +20,6 @@ public class Conference {
 	}
 
 	public List<Talk> generatesConference() {
-		
 		List<Talk >conference = new ArrayList<Talk>();
 		if(!talks.isEmpty()){
 			conference = mountConferenceSchedule(talks, 1, conference);
@@ -29,12 +28,6 @@ public class Conference {
 	}
 
 	private List<Talk> mountConferenceSchedule(List<Talk> talks, int numberTrack, List<Talk> conference){
-		
-		this.beginLunchTime = Calendar.getInstance();
-		this.endLunchTime = Calendar.getInstance();
-		this.conferenceSchedule = Calendar.getInstance();
-		this.endConferenceSchedule = Calendar.getInstance();
-		
 		resetSchedules();
 		
 		Talk talkNumeroTrack = new Talk();
@@ -45,17 +38,13 @@ public class Conference {
 			if (talk.isFree()) {
 				if (isBeforeLunchTime(conferenceSchedule)) {
 					if (minutesToLunch() >= Long.parseLong(talk.getTime())) {
-						talk.setFree(false);
-						talk.setSchedule(conferenceSchedule.getTime());
-						conference.add(talk);
-						conferenceSchedule.add(GregorianCalendar.MINUTE, new Integer(talk.getTime()));
+						addTaskToConference(conference, talk);
 					}
 					if(isLunchTime()){
 						setLunchTime(conference);
 						break;
 					}
 				}
-
 			}
 		}
 
@@ -63,16 +52,12 @@ public class Conference {
 			Talk talk = (Talk) i.next();
 			if (talk.isFree()) {
 				if (conferenceSchedule.getTime().compareTo(endLunchTime.getTime()) < 0) {
-					addTrackAfterLunchTime(conference, talk);
+					addFirstTrackAfterLunchTime(conference, talk);
 				} else {
-					long minutesToEnd = TimeUnit.MILLISECONDS.toMinutes(endConferenceSchedule.getTimeInMillis() - conferenceSchedule.getTimeInMillis());
-					if (minutesToEnd >= 30 && minutesToEnd >= Long.parseLong(talk.getTime())) {
-						talk.setFree(false);
-						talk.setSchedule(conferenceSchedule.getTime());
-						conference.add(talk);
-						conferenceSchedule.add(GregorianCalendar.MINUTE, new Integer(talk.getTime()));
+					if (minutesToEnd() >= 30 && minutesToEnd() >= Long.parseLong(talk.getTime())) {
+						addTaskToConference(conference, talk);
 					}
-					if(!i.hasNext() || minutesToEnd < 30){
+					if(!i.hasNext() || minutesToEnd() < 30){
 						Talk talkNetworking = new Talk("Networking Event", "", endConferenceSchedule.getTime(), false); 
 						conference.add(talkNetworking);
 						if(i.hasNext()){
@@ -81,30 +66,42 @@ public class Conference {
 						break;
 					}
 				}
-
 			}
 		}
 		return conference;
 	}
+
+	private long minutesToEnd() {
+		return TimeUnit.MILLISECONDS.toMinutes(endConferenceSchedule.getTimeInMillis() - conferenceSchedule.getTimeInMillis());
+	}
+
+	private void addTaskToConference(List<Talk> conference, Talk talk) {
+		talk.setFree(false);
+		talk.setSchedule(conferenceSchedule.getTime());
+		conference.add(talk);
+		conferenceSchedule.add(GregorianCalendar.MINUTE, new Integer(talk.getTime()));
+	}
 	
 	private void resetSchedules(){
-		
+		this.conferenceSchedule = Calendar.getInstance();
 		this.conferenceSchedule.set(Calendar.HOUR_OF_DAY, 9);
-		conferenceSchedule.set(Calendar.MINUTE, 0);
-		conferenceSchedule.set(Calendar.SECOND, 0);
+		this.conferenceSchedule.set(Calendar.MINUTE, 0);
+		this.conferenceSchedule.set(Calendar.SECOND, 0);
 
-		endConferenceSchedule.set(Calendar.HOUR_OF_DAY, 17);
-		endConferenceSchedule.set(Calendar.MINUTE, 0);
-		endConferenceSchedule.set(Calendar.SECOND, 0);
+		this.endConferenceSchedule = Calendar.getInstance();
+		this.endConferenceSchedule.set(Calendar.HOUR_OF_DAY, 17);
+		this.endConferenceSchedule.set(Calendar.MINUTE, 0);
+		this.endConferenceSchedule.set(Calendar.SECOND, 0);
 		
-		beginLunchTime.set(Calendar.HOUR_OF_DAY, 12);
-		beginLunchTime.set(Calendar.MINUTE, 0);
-		beginLunchTime.set(Calendar.SECOND, 0);
+		this.beginLunchTime = Calendar.getInstance();
+		this.beginLunchTime.set(Calendar.HOUR_OF_DAY, 12);
+		this.beginLunchTime.set(Calendar.MINUTE, 0);
+		this.beginLunchTime.set(Calendar.SECOND, 0);
 
-		endLunchTime.set(Calendar.HOUR_OF_DAY, 13);
-		endLunchTime.set(Calendar.MINUTE, 0);
-		endLunchTime.set(Calendar.SECOND, 0);
-
+		this.endLunchTime = Calendar.getInstance();
+		this.endLunchTime.set(Calendar.HOUR_OF_DAY, 13);
+		this.endLunchTime.set(Calendar.MINUTE, 0);
+		this.endLunchTime.set(Calendar.SECOND, 0);
 	}
 	
 	private boolean isBeforeLunchTime(Calendar conferenceSchedule){
@@ -116,9 +113,9 @@ public class Conference {
 	}
 	
 	private void setLunchTime(List<Talk> conference){
-		conferenceSchedule.set(Calendar.HOUR_OF_DAY, 12);
-		conferenceSchedule.set(Calendar.MINUTE, 0);
-		conferenceSchedule.set(Calendar.SECOND, 0);
+		this.conferenceSchedule.set(Calendar.HOUR_OF_DAY, 12);
+		this.conferenceSchedule.set(Calendar.MINUTE, 0);
+		this.conferenceSchedule.set(Calendar.SECOND, 0);
 		Talk talkAlmoco = new Talk("Lunch", "", conferenceSchedule.getTime(), false);
 		conference.add(talkAlmoco);
 	}
@@ -127,12 +124,9 @@ public class Conference {
 		return TimeUnit.MILLISECONDS.toMinutes(beginLunchTime.getTimeInMillis() - conferenceSchedule.getTimeInMillis());
 	}
 
-	private void addTrackAfterLunchTime(List<Talk> conference, Talk talk) {
-		conferenceSchedule.set(Calendar.HOUR_OF_DAY, 13);
-		talk.setFree(false);
-		talk.setSchedule(conferenceSchedule.getTime());
-		conference.add(talk);
-		conferenceSchedule.add(GregorianCalendar.MINUTE,new Integer(talk.getTime()));
+	private void addFirstTrackAfterLunchTime(List<Talk> conference, Talk talk) {
+		this.conferenceSchedule.set(Calendar.HOUR_OF_DAY, 13);
+		addTaskToConference(conference, talk);
 	}
 
 }

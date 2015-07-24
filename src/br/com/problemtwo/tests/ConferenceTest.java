@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import br.com.problemtwo.Talk;
 
-public class ConferenciaTest {
+public class ConferenceTest {
 
 	@Test
 	public void testLoadTalkCorrectly(){
@@ -21,6 +21,7 @@ public class ConferenciaTest {
 		
 		assertThat(receivedTalk, is(equalTo(expectedTalk)));
 	}
+	
 	
 
 }

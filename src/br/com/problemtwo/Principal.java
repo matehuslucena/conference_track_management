@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.problemtwo.exceptions.ListaVaziaException;
+import br.com.problemtwo.exceptions.EmptyListException;
 
 public class Principal {
 
@@ -19,7 +19,7 @@ public class Principal {
 			for (Talk talk : cronogramaConferencia) {
 				System.out.println(talk.getSchedule() != null ? sdf.format(talk.getSchedule()) + " - " + talk.getName() : "" +  talk.getName());
 			}
-		} catch (ListaVaziaException e) {
+		} catch (EmptyListException e) {
 			e.printStackTrace();
 		}
 	}

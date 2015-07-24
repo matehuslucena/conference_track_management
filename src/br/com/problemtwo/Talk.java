@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import br.com.problemtwo.exceptions.ListaVaziaException;
+import br.com.problemtwo.exceptions.EmptyListException;
 
 public class Talk {
 
@@ -25,7 +25,7 @@ public class Talk {
 		this.free = true;
 	}
 	
-	public List<Talk> loadTalks(String file) throws ListaVaziaException{
+	public List<Talk> loadTalks(String file) throws EmptyListException{
 		Scanner scanner;
 		List<Talk> lsTalk = new ArrayList<Talk>();
 		try {
@@ -39,7 +39,7 @@ public class Talk {
 			e.printStackTrace();
 		}
 		if(lsTalk.isEmpty()){
-			throw new ListaVaziaException();
+			throw new EmptyListException();
 		}
 		return lsTalk;
 	}
