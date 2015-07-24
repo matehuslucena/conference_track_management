@@ -15,6 +15,10 @@ public class Conference {
 	private Calendar conferenceSchedule;
 	private Calendar endConferenceSchedule;
 	
+	public Conference(){
+		
+	}
+	
 	public Conference(List<Talk> talks){
 		this.talks = talks;
 	}
@@ -27,7 +31,7 @@ public class Conference {
 		return conference;
 	}
 
-	private List<Talk> mountConferenceSchedule(List<Talk> talks, int numberTrack, List<Talk> conference){
+	public List<Talk> mountConferenceSchedule(List<Talk> talks, int numberTrack, List<Talk> conference){
 		resetSchedules();
 		
 		Talk talkNumeroTrack = new Talk();
@@ -38,7 +42,7 @@ public class Conference {
 			if (talk.isFree()) {
 				if (isBeforeLunchTime(conferenceSchedule)) {
 					if (minutesToLunch() >= Long.parseLong(talk.getTime())) {
-						addTaskToConference(conference, talk);
+						addTalkToConference(conference, talk);
 					}
 					if(isLunchTime()){
 						setLunchTime(conference);
@@ -55,7 +59,7 @@ public class Conference {
 					addFirstTrackAfterLunchTime(conference, talk);
 				} else {
 					if (minutesToEnd() >= 30 && minutesToEnd() >= Long.parseLong(talk.getTime())) {
-						addTaskToConference(conference, talk);
+						addTalkToConference(conference, talk);
 					}
 					if(!i.hasNext() || minutesToEnd() < 30){
 						Talk talkNetworking = new Talk("Networking Event", "", endConferenceSchedule.getTime(), false); 
@@ -75,7 +79,7 @@ public class Conference {
 		return TimeUnit.MILLISECONDS.toMinutes(endConferenceSchedule.getTimeInMillis() - conferenceSchedule.getTimeInMillis());
 	}
 
-	private void addTaskToConference(List<Talk> conference, Talk talk) {
+	public void addTalkToConference(List<Talk> conference, Talk talk) {
 		talk.setFree(false);
 		talk.setSchedule(conferenceSchedule.getTime());
 		conference.add(talk);
@@ -126,7 +130,7 @@ public class Conference {
 
 	private void addFirstTrackAfterLunchTime(List<Talk> conference, Talk talk) {
 		this.conferenceSchedule.set(Calendar.HOUR_OF_DAY, 13);
-		addTaskToConference(conference, talk);
+		addTalkToConference(conference, talk);
 	}
 
 }

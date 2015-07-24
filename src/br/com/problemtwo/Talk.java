@@ -44,12 +44,12 @@ public class Talk {
 		return lsTalk;
 	}
 
-	public Talk getTalk(String scanner) {
+	public Talk getTalk(String fileLine) {
 		Talk talk = new Talk();
-		if(scanner != null && scanner != ""){
-			int splitIndex = scanner.lastIndexOf(" ");
-			talk.setName(scanner.substring(0, splitIndex));
-			String tempo = scanner.substring(splitIndex + 1).replace("\r", "");
+		if(fileLine != null && fileLine != ""){
+			int splitIndex = fileLine.lastIndexOf(" ");
+			talk.setName(fileLine.substring(0, splitIndex));
+			String tempo = fileLine.substring(splitIndex + 1).replace("\r", "");
 			if (tempo.endsWith("min")) {
 				talk.setTime(tempo.substring(0, 2));
 			} else if (tempo.equals("lightning")) {
@@ -93,14 +93,15 @@ public class Talk {
 	public void setFree(boolean free) {
 		this.free = free;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((schedule == null) ? 0 : schedule.hashCode());
 		result = prime * result + (free ? 1231 : 1237);
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((schedule == null) ? 0 : schedule.hashCode());
 		result = prime * result + ((time == null) ? 0 : time.hashCode());
 		return result;
 	}
@@ -114,17 +115,17 @@ public class Talk {
 		if (getClass() != obj.getClass())
 			return false;
 		Talk other = (Talk) obj;
-		if (schedule == null) {
-			if (other.schedule != null)
-				return false;
-		} else if (!schedule.equals(other.schedule))
-			return false;
 		if (free != other.free)
 			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (schedule == null) {
+			if (other.schedule != null)
+				return false;
+		} else if (!schedule.equals(other.schedule))
 			return false;
 		if (time == null) {
 			if (other.time != null)
@@ -133,4 +134,6 @@ public class Talk {
 			return false;
 		return true;
 	}
+	
+	
 }
