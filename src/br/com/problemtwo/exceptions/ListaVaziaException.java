@@ -1,4 +1,4 @@
-package br.com.tw.problemtwo.exceptions;
+package br.com.problemtwo.exceptions;
 
 
 public class ListaVaziaException extends Exception {
