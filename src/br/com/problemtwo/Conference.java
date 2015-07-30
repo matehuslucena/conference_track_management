@@ -35,7 +35,7 @@ public class Conference {
         resetSchedules();
 
         Talk talkNumberTrack = new Talk();
-        talkNumberTrack.setName("Track" + numberTrack);
+        talkNumberTrack.setName("Tracks" + numberTrack);
         conference.add(talkNumberTrack);
 
         for (Talk talk : talks) {
