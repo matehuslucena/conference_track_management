@@ -29,10 +29,9 @@ public class Talk {
 		Scanner scanner;
 		List<Talk> lsTalk = new ArrayList<Talk>();
 		try {
-			scanner = new Scanner(new FileReader("problemTwo.txt")).useDelimiter("\\||\\n");
+			scanner = new Scanner(new FileReader(file)).useDelimiter("\\||\\n");
 			while (scanner.hasNext()) {
-				Talk talk = new Talk();
-				talk = getTalk(scanner.next());
+				Talk talk = getTalk(scanner.next());
 				lsTalk.add(talk);
 			}
 		} catch (FileNotFoundException e) {

@@ -9,14 +9,14 @@ import br.com.problemtwo.exceptions.EmptyListException;
 public class Principal {
 
 	public static void main(String[] args) {
-		String file = "problemTwo.txt";
-		List<Talk> talks = new ArrayList<Talk>();
+		String file = "../problemTwo.txt";
+		List<Talk> talks;
 		try {
 			talks = new Talk().loadTalks(file);
 			Conference conference = new Conference(talks);
-			List<Talk> cronogramaConferencia = conference.generatesConference();
+			List<Talk> conferenceTrack = conference.generatesConference();
 			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-			for (Talk talk : cronogramaConferencia) {
+			for (Talk talk : conferenceTrack) {
 				System.out.println(talk.getSchedule() != null ? sdf.format(talk.getSchedule()) + " - " + talk.getName() : "" +  talk.getName());
 			}
 		} catch (EmptyListException e) {
