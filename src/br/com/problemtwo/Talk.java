@@ -48,10 +48,10 @@ public class Talk {
 		if(fileLine != null && fileLine != ""){
 			int splitIndex = fileLine.lastIndexOf(" ");
 			talk.setName(fileLine.substring(0, splitIndex));
-			String tempo = fileLine.substring(splitIndex + 1).replace("\r", "");
-			if (tempo.endsWith("min")) {
-				talk.setTime(tempo.substring(0, 2));
-			} else if (tempo.equals("lightning")) {
+			String time = fileLine.substring(splitIndex + 1).replace("\r", "");
+			if (time.endsWith("min")) {
+				talk.setTime(time.substring(0, 2));
+			} else if (time.equals("lightning")) {
 				talk.setTime("5");
 			}
 			talk.setFree(true);

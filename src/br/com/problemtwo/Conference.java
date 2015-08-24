@@ -14,6 +14,11 @@ public class Conference {
     private Calendar endLunchTime;
     private Calendar conferenceSchedule;
     private Calendar endConferenceSchedule;
+    static final int INITIAL_TRACK_NUMBER = 1;
+    static final int START_CONFERENCE = 9;
+    static final int STAR_LUNCH = 12;
+    static final int END_LUNCH = 13;
+    static final int END_CONFERENCE = 17;
 
     public Conference() {
 
@@ -26,7 +31,7 @@ public class Conference {
     public List<Talk> generatesConference() {
         List<Talk> conference = new ArrayList<Talk>();
         if (!talks.isEmpty()) {
-            conference = mountConferenceSchedule(talks, 1, conference);
+            conference = mountConferenceSchedule(talks, INITIAL_TRACK_NUMBER, conference);
         }
         return conference;
     }
@@ -55,7 +60,7 @@ public class Conference {
         for (Iterator<Talk> i = talks.iterator(); i.hasNext(); ) {
             Talk talk = i.next();
             if (talk.isFree()) {
-                if (conferenceSchedule.getTime().compareTo(endLunchTime.getTime()) < 0) {
+                if (isEndLunchTime()) {
                     addFirstTrackAfterLunchTime(conference, talk);
                 } else {
                     if (minutesToEnd() >= 30 && minutesToEnd() >= Long.parseLong(talk.getTime())) {
@@ -88,22 +93,22 @@ public class Conference {
 
     private void resetSchedules() {
         this.conferenceSchedule = Calendar.getInstance();
-        this.conferenceSchedule.set(Calendar.HOUR_OF_DAY, 9);
+        this.conferenceSchedule.set(Calendar.HOUR_OF_DAY, START_CONFERENCE);
         this.conferenceSchedule.set(Calendar.MINUTE, 0);
         this.conferenceSchedule.set(Calendar.SECOND, 0);
 
         this.endConferenceSchedule = Calendar.getInstance();
-        this.endConferenceSchedule.set(Calendar.HOUR_OF_DAY, 17);
+        this.endConferenceSchedule.set(Calendar.HOUR_OF_DAY, END_CONFERENCE);
         this.endConferenceSchedule.set(Calendar.MINUTE, 0);
         this.endConferenceSchedule.set(Calendar.SECOND, 0);
 
         this.beginLunchTime = Calendar.getInstance();
-        this.beginLunchTime.set(Calendar.HOUR_OF_DAY, 12);
+        this.beginLunchTime.set(Calendar.HOUR_OF_DAY, STAR_LUNCH);
         this.beginLunchTime.set(Calendar.MINUTE, 0);
         this.beginLunchTime.set(Calendar.SECOND, 0);
 
         this.endLunchTime = Calendar.getInstance();
-        this.endLunchTime.set(Calendar.HOUR_OF_DAY, 13);
+        this.endLunchTime.set(Calendar.HOUR_OF_DAY, END_LUNCH);
         this.endLunchTime.set(Calendar.MINUTE, 0);
         this.endLunchTime.set(Calendar.SECOND, 0);
     }
@@ -111,13 +116,17 @@ public class Conference {
     private boolean isBeforeLunchTime(Calendar conferenceSchedule) {
         return conferenceSchedule.getTime().compareTo(beginLunchTime.getTime()) < 0;
     }
+    
+    private boolean isEndLunchTime() {
+    	return conferenceSchedule.getTime().compareTo(endLunchTime.getTime()) < 0;
+    }
 
     private boolean isLunchTime() {
         return conferenceSchedule.compareTo(beginLunchTime) == 0 || minutesToLunch() < 30;
     }
 
     private void setLunchTime(List<Talk> conference) {
-        this.conferenceSchedule.set(Calendar.HOUR_OF_DAY, 12);
+        this.conferenceSchedule.set(Calendar.HOUR_OF_DAY, STAR_LUNCH);
         this.conferenceSchedule.set(Calendar.MINUTE, 0);
         this.conferenceSchedule.set(Calendar.SECOND, 0);
         Talk lunchTalk = new Talk("Lunch", "", conferenceSchedule.getTime(), false);
@@ -129,7 +138,7 @@ public class Conference {
     }
 
     private void addFirstTrackAfterLunchTime(List<Talk> conference, Talk talk) {
-        this.conferenceSchedule.set(Calendar.HOUR_OF_DAY, 13);
+        this.conferenceSchedule.set(Calendar.HOUR_OF_DAY, END_LUNCH);
         addTalkToConference(conference, talk);
     }
 
