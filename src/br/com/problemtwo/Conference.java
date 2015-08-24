@@ -14,11 +14,12 @@ public class Conference {
     private Calendar endLunchTime;
     private Calendar conferenceSchedule;
     private Calendar endConferenceSchedule;
-    static final int INITIAL_TRACK_NUMBER = 1;
-    static final int START_CONFERENCE = 9;
-    static final int STAR_LUNCH = 12;
-    static final int END_LUNCH = 13;
-    static final int END_CONFERENCE = 17;
+ 
+    private final int INITIAL_TRACK_NUMBER = 1;
+    private final int START_CONFERENCE = 9;
+    private final int STAR_LUNCH = 12;
+    private final int END_LUNCH = 13;
+    private final int END_CONFERENCE = 17;
 
     public Conference() {
 

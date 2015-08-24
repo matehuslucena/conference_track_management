@@ -9,7 +9,7 @@ import br.com.problemtwo.exceptions.EmptyListException;
 public class Principal {
 
 	public static void main(String[] args) {
-		String file = "../problemTwo.txt";
+		String file = "problemTwo.txt";
 		List<Talk> talks;
 		try {
 			talks = new Talk().loadTalks(file);
