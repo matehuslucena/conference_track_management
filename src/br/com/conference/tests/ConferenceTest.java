@@ -1,7 +1,8 @@
-package br.com.problemtwo.tests;
+package br.com.conference.tests;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,29 +11,30 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.problemtwo.Conference;
-import br.com.problemtwo.Talk;
+import br.com.conference.Conference;
+import br.com.conference.Talk;
 
 public class ConferenceTest {
 	Talk expectedTalk;
+	List<Talk> lsConference;
+	List<Talk> talks;
+	Conference conference;
 	
 	@Before
-	public void loadNewTalk(){
-		this.expectedTalk = new Talk("Writing Fast Tests Against Enterprise Rails", "60",new Date(), true);
+	public void createTestsArtifacts(){
+		this.expectedTalk = new Talk("Test talk", "60", new Date(), true);
+		lsConference = new ArrayList<Talk>();
+		talks = new ArrayList<Talk>();
+		conference = new Conference();
+		conference.resetSchedules();
 	}
-
+	
 	@Test
 	public void testMountConferenceSchedule(){
-		List<Talk> talks = new ArrayList<Talk>();
-		List<Talk> conference = new ArrayList<Talk>();
-		
 		talks.add(expectedTalk);
-		conference = new Conference().mountConferenceSchedule(talks, 1, conference);
+		lsConference = conference.mountConferenceSchedule(talks, 1, lsConference);
 		
 		assertThat(talks.size(), is(equalTo(1)));
-		assertThat(conference.get(1).getName(), is(equalTo(expectedTalk.getName())));
+		assertThat(lsConference.get(1).getName(), is(equalTo(expectedTalk.getName())));
 	}
-	
-	
-
 }

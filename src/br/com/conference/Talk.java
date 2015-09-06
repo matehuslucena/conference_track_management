@@ -1,13 +1,12 @@
-package br.com.problemtwo;
+package br.com.conference;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import br.com.problemtwo.exceptions.EmptyListException;
+import br.com.conference.exceptions.EmptyListException;
 
 public class Talk {
 
@@ -25,17 +24,13 @@ public class Talk {
 		this.free = true;
 	}
 	
-	public List<Talk> loadTalks(String file) throws EmptyListException{
+	public static List<Talk> loadTalks(FileReader file) throws EmptyListException{
 		Scanner scanner;
 		List<Talk> lsTalk = new ArrayList<Talk>();
-		try {
-			scanner = new Scanner(new FileReader(file)).useDelimiter("\\||\\n");
-			while (scanner.hasNext()) {
-				Talk talk = getTalk(scanner.next());
-				lsTalk.add(talk);
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		scanner = new Scanner(file).useDelimiter("\\||\\n");
+		while (scanner.hasNext()) {
+			Talk talk = getTalk(scanner.next());
+			lsTalk.add(talk);
 		}
 		if(lsTalk.isEmpty()){
 			throw new EmptyListException();
@@ -43,7 +38,7 @@ public class Talk {
 		return lsTalk;
 	}
 
-	public Talk getTalk(String fileLine) {
+	public static Talk getTalk(String fileLine) {
 		Talk talk = new Talk();
 		if(fileLine != null && fileLine != ""){
 			int splitIndex = fileLine.lastIndexOf(" ");
@@ -51,7 +46,7 @@ public class Talk {
 			String time = fileLine.substring(splitIndex + 1).replace("\r", "");
 			if (time.endsWith("min")) {
 				talk.setTime(time.substring(0, 2));
-			} else if (time.equals("lightning")) {
+			}else if (time.equals("lightning")) {
 				talk.setTime("5");
 			}
 			talk.setFree(true);

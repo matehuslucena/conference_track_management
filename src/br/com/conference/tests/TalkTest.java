@@ -1,27 +1,39 @@
-package br.com.problemtwo.tests;
+package br.com.conference.tests;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import br.com.problemtwo.Talk;
-import br.com.problemtwo.exceptions.EmptyListException;
+import br.com.conference.Conference;
+import br.com.conference.Talk;
+import br.com.conference.exceptions.EmptyListException;
 
 public class TalkTest {
-	Talk talk = new Talk();
 	List<Talk> talks = new ArrayList<Talk>();
+	
+	@Before
+	public void createTalk(){
+		Talk talk = new Talk("Test Talk", "60", new Date(), true);
+	}
 	
 	@Test
 	public void testLoadingTalkFile(){
 		try {
-			talks = talk.loadTalks("problemTwo.txt");
+			FileReader file = new FileReader("problemTwo.txt");
+			talks = Talk.loadTalks(file);
 		} catch (EmptyListException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		assertThat(talks.size(), is(not(0)));
@@ -38,5 +50,4 @@ public class TalkTest {
 		
 		assertThat(receivedTalk, is(equalTo(expectedTalk)));
 	}
-
 }

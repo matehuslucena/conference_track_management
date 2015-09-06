@@ -1,4 +1,4 @@
-package br.com.problemtwo.exceptions;
+package br.com.conference.exceptions;
 
 
 public class EmptyListException extends Exception {
